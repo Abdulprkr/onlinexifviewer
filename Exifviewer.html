@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <style>
+
+      table {
+
+        border-collapse: collapse;
+
+      }
+
+      td, th {
+
+        border: 1px solid black;
+
+        padding: 5px;
+
+      }
+
+      th {
+
+        text-align: left;
+
+        background-color: lightgray;
+
+      }
+
+      img {
+
+        border: 2px solid blue;
+
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <form onsubmit="displayMetadata(); return false;">
+
+      <label for="urlInput">Enter image URL:</label><br>
+
+      <input type="text" id="urlInput" value=""><br>
+
+      <input type="submit" value="Submit">
+
+    </form> 
+
+    <br>
+
+    <img id="image" src="">
+
+    <br>
+
+    <table id="metadataTable">
+
+      <tr>
+
+        <th>Property</th>
+
+        <th>Value</th>
+
+      </tr>
+
+    </table>
+
+    <script>
+
+      function displayMetadata() {
+
+        // Get image URL from input field
+
+        var url = document.getElementById("urlInput").value;
+
+        
+
+        // Display image
+
+        var image = document.getElementById("image");
+
+        image.src = url;
+
+        
+
+        // Get Exif data from image
+
+        EXIF.getData(image, function() {
+
+          // Clear previous metadata from table
+
+          var table = document.getElementById("metadataTable");
+
+          while (table.rows.length > 1) {
+
+            table.deleteRow(1);
+
+          }
+
+          
+
+          // Add Exif data to table
+
+          var metadata = this.exifdata;
+
+          for (var property in metadata) {
+
+            if (metadata.hasOwnProperty(property)) {
+
+              var row = table.insertRow();
+
+              var propertyCell = row.insertCell();
+
+              var valueCell = row.insertCell();
+
+              propertyCell.innerHTML = property;
+
+              valueCell.innerHTML = metadata[property];
+
+            }
+
+          }
+
+        });
+
+      }
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+
+  </body>
+
+</html>
+
